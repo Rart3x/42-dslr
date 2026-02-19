@@ -44,6 +44,10 @@ def describe(path: str, show_all_rows: bool = False):
         # .T to transpose so that stats are rows and columns are column names
         describe_df = pd.DataFrame(stats).T
 
+        # Optional: round the numbers for nicer output
+        if not show_all_rows:
+            describe_df = describe_df.round(6)
+
         # Print the summary table
         print(describe_df)
 
