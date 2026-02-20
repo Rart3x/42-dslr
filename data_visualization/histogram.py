@@ -62,7 +62,7 @@ if __name__ == "__main__":
     )
 
     # Mandatory CSV file argument
-    parser.add_argument('file',
+    parser.add_argument('path',
                         type=str,
                         help='path to file (the dataset)')
 
