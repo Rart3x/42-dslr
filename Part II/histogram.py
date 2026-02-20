@@ -1,6 +1,7 @@
 import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
+from colorama import Fore, Style
 
 houses = [
     "Ravenclaw",
@@ -33,29 +34,32 @@ def main(path: str) -> None:
     :param path: the path to the CSV file.
     """
 
-    df = pd.read_csv(filepath_or_buffer=path)
-    fig, axes = plt.subplots(nrows=4, ncols=4, figsize=(10, 10))
-    axes = axes.flatten()
+    try:
+        df = pd.read_csv(filepath_or_buffer=path)
+        fig, axes = plt.subplots(nrows=4, ncols=4, figsize=(10, 10))
+        axes = axes.flatten()
 
-    # Loop on each subject to create the histogram
-    for i, subject in enumerate(subjects):
-        ax = axes[i]
-        for house in houses:
-            subject_score = df[df["Hogwarts House"] == house][subject]
-            subject_score.dropna(inplace=True)
-            ax.hist(subject_score, label=house, alpha=0.5)
-            ax.legend()
-            ax.set_xlabel("Score")
-            ax.set_ylabel("Frequency")
-            ax.set_title(subject)
+        # Loop on each subject to create the histogram
+        for i, subject in enumerate(subjects):
+            ax = axes[i]
+            for house in houses:
+                subject_score = df[df["Hogwarts House"] == house][subject]
+                subject_score.dropna(inplace=True)
+                ax.hist(subject_score, label=house, alpha=0.5)
+                ax.legend()
+                ax.set_xlabel("Score")
+                ax.set_ylabel("Frequency")
+                ax.set_title(subject)
 
-    # Hide unused axes
-    for j in range(len(subjects), len(axes)):
-        axes[j].set_visible(False)
+        # Hide unused axes
+        for j in range(len(subjects), len(axes)):
+            axes[j].set_visible(False)
 
-    # Show the histogram
-    plt.tight_layout()
-    plt.show()
+        # Show the histogram
+        plt.tight_layout()
+        plt.show()
+    except Exception as e:
+        print(f"{Fore.RED}An error occurred: {e}{Style.RESET_ALL}")
 
 
 if __name__ == "__main__":
