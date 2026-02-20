@@ -25,7 +25,14 @@ subjects = [
     "Flying"
 ]
 
-def main(path: str):
+
+def main(path: str) -> None:
+    """
+    Displays a histogram showing the score of each houses in each subject.
+
+    :param path: the path to the CSV file.
+    """
+
     df = pd.read_csv(filepath_or_buffer=path)
     fig, axes = plt.subplots(nrows=4, ncols=4, figsize=(10, 10))
     axes = axes.flatten()
@@ -33,7 +40,7 @@ def main(path: str):
     for i, subject in enumerate(subjects):
         ax = axes[i]
         for house in houses:
-            subject_score = df[ df["Hogwarts House"] == house][subject]
+            subject_score = df[df["Hogwarts House"] == house][subject]
             subject_score.dropna(inplace=True)
             ax.hist(subject_score, label=house, alpha=0.5)
             ax.legend()
@@ -49,9 +56,18 @@ def main(path: str):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    # Create the argument parser
+    parser = argparse.ArgumentParser(
+        description=""
+    )
 
-    parser.add_argument('path', type=str, help='path to file (the dataset)')
+    # Mandatory CSV file argument
+    parser.add_argument('file',
+                        type=str,
+                        help='path to file (the dataset)')
+
+    # Parse the arguments
     args = parser.parse_args()
 
+    # Call the main function
     main(args.path)
