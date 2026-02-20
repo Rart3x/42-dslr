@@ -1,3 +1,4 @@
+import mathematical as mth
 import pandas as pd
 import argparse
 
@@ -30,14 +31,14 @@ def describe(path: str, show_all_rows: bool = False):
 
         # Compute statistics for each numeric column
         stats = {
-            "count": numeric_df.count(),
-            "mean": numeric_df.mean(),
-            "std": numeric_df.std(),
-            "min": numeric_df.min(),
-            "25%": numeric_df.quantile(0.25),
-            "50%": numeric_df.quantile(0.5),
-            "75%": numeric_df.quantile(0.75),
-            "max": numeric_df.max(),
+            "count":    mth.count(numeric_df),
+            "mean":     mth.mean(numeric_df),
+            "std":      mth.std(numeric_df),
+            "min":      mth.min(numeric_df),
+            "25%":      mth.percentile_25(numeric_df),
+            "50%":      mth.percentile_50(numeric_df),
+            "75%":      mth.percentile_75(numeric_df),
+            "max":      mth.max(numeric_df),
         }
 
         # Convert the stats dictionary to a DataFrame for better formatting
