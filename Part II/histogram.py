@@ -37,6 +37,7 @@ def main(path: str) -> None:
     fig, axes = plt.subplots(nrows=4, ncols=4, figsize=(10, 10))
     axes = axes.flatten()
 
+    # Loop on each subject to create the histogram
     for i, subject in enumerate(subjects):
         ax = axes[i]
         for house in houses:
@@ -48,9 +49,11 @@ def main(path: str) -> None:
             ax.set_ylabel("Frequency")
             ax.set_title(subject)
 
+    # Hide unused axes
     for j in range(len(subjects), len(axes)):
         axes[j].set_visible(False)
 
+    # Show the histogram
     plt.tight_layout()
     plt.show()
 
