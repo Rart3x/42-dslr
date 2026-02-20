@@ -2,13 +2,7 @@ import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 from colorama import Fore, Style
-
-houses = [
-    "Ravenclaw",
-    "Hufflepuff",
-    "Slytherin",
-    "Gryffindor",
-]
+from constants import houses
 
 subjects = [
     "Arithmancy",
