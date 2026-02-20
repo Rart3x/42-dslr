@@ -2,23 +2,7 @@ import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 from colorama import Fore, Style
-from constants import houses
-
-subjects = [
-    "Arithmancy",
-    "Astronomy",
-    "Herbology",
-    "Defense Against the Dark Arts",
-    "Divination",
-    "Muggle Studies",
-    "Ancient Runes",
-    "History of Magic",
-    "Transfiguration",
-    "Potions",
-    "Care of Magical Creatures",
-    "Charms",
-    "Flying"
-]
+from constants import houses, subjects
 
 
 def main(path: str) -> None:
