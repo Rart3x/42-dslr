@@ -61,9 +61,6 @@ def mean(data: pd.DataFrame):
     return pd.Series(results)
 
 
-import math
-import pandas as pd
-
 def std(data: pd.DataFrame):
     """
     Compute the sample standard deviation for each numeric column,
@@ -193,9 +190,12 @@ def _percentile(data: pd.DataFrame, q: float):
         else:
             # Linear interpolation between the two closest values
             weight = pos - lower
-            results[col] = values[lower] + (values[upper] - values[lower]) * weight
+            results[col] = (values[lower] +
+                            (values[upper] -
+                             values[lower]) * weight)
 
     return pd.Series(results)
+
 
 def percentile_25(data: pd.DataFrame):
     """
