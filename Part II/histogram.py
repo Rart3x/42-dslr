@@ -22,8 +22,8 @@ def main(path: str) -> None:
             ax = axes[i]
             for house in houses:
                 subject_score = df[df["Hogwarts House"] == house][subject]
-                subject_score.dropna(inplace=True)
-                ax.hist(subject_score, label=house, alpha=0.5)
+                clean_subject_score = subject_score.dropna()
+                ax.hist(clean_subject_score, label=house, alpha=0.5)
                 ax.legend()
                 ax.set_xlabel("Score")
                 ax.set_ylabel("Frequency")
