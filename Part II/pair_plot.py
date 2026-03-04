@@ -11,8 +11,11 @@ def main(path: str) -> None:
     """
     Displays a pair plot.
 
-    This function will loop over all different subjects and make a scatter plot of each subject against another subject.
-    On the main diagonal, instead of plotting a scatter plot, we make a histogram since it's 2 times the same subject.
+    This function will loop over all different subjects and make
+    a scatter plot of each subject against another subject.
+
+    On the main diagonal, instead of plotting a scatter plot,
+    we make a histogram since it's 2 times the same subject.
 
     :param path: the path to the CSV file.
     """
@@ -24,7 +27,9 @@ def main(path: str) -> None:
     for column in columns_to_delete:
         df.pop(column)
 
-    fig, axes = plt.subplots(nrows=nb_rows_lines, ncols=nb_rows_lines, figsize=(20, 20))
+    fig, axes = plt.subplots(nrows=nb_rows_lines,
+                             ncols=nb_rows_lines,
+                             figsize=(20, 20))
     axes = axes.flatten()
 
     try:
@@ -33,13 +38,14 @@ def main(path: str) -> None:
                 ax = axes[i]
                 if subject_column == subject_line:
                     for house in houses:
-                        subject_score = df[df["Hogwarts House"] == house][subject_line]
+                        house_idx = df["Hogwarts House"] == house
+                        subject_score = df[house_idx][subject_line]
                         clean_subject_score = subject_score.dropna()
                         ax.hist(clean_subject_score, label=house, alpha=0.5)
                 else:
                     for house in houses:
                         df_house = df[df["Hogwarts House"] == house].copy()
-                        clean_df_house = df_house.dropna(subset=[subject_line, subject_column])
+                        clean_df_house = df_house.dropna()
                         ax.scatter(x=clean_df_house[subject_line],
                                    y=clean_df_house[subject_column],
                                    alpha=0.5,
@@ -48,7 +54,12 @@ def main(path: str) -> None:
                                    s=1)
 
                 if col_idx == 0:
-                    ax.set_ylabel(subject_line, fontsize=7, rotation=0, labelpad=15, ha='right', va='center')
+                    ax.set_ylabel(subject_line,
+                                  fontsize=7,
+                                  rotation=0,
+                                  labelpad=15,
+                                  ha='right',
+                                  va='center')
                     ax.tick_params(axis='y', labelsize=6)
                 else:
                     ax.set_yticks([])

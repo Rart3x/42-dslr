@@ -23,8 +23,7 @@ def main(path: str) -> None:
         # Loop on all houses to create a scatter plot for each of them
         for house in houses:
             df_house = df[df["Hogwarts House"] == house].copy()
-            df_house.dropna(subset=[first_subject, second_subject],
-                            inplace=True)
+            df_house.dropna(inplace=True)
             plt.scatter(x=df_house[first_subject],
                         y=df_house[second_subject],
                         alpha=0.5,
