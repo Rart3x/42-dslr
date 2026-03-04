@@ -1,16 +1,22 @@
 import argparse
 
-import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 from colorama import Style, Fore
 
 from constants import houses, subjects, columns_to_delete
 
-matplotlib.use('TkAgg')
-
 
 def main(path: str) -> None:
+    """
+    Displays a pair plot.
+
+    This function will loop over all different subjects and make a scatter plot of each subject against another subject.
+    On the main diagonal, instead of plotting a scatter plot, we make a histogram since it's 2 times the same subject.
+
+    :param path: the path to the CSV file.
+    """
+
     df = pd.read_csv(path)
     nb_rows_lines = len(subjects)
     i = 0
@@ -18,7 +24,7 @@ def main(path: str) -> None:
     for column in columns_to_delete:
         df.pop(column)
 
-    fig, axes = plt.subplots(nrows=nb_rows_lines, ncols=nb_rows_lines, figsize=(5, 5))
+    fig, axes = plt.subplots(nrows=nb_rows_lines, ncols=nb_rows_lines, figsize=(20, 20))
     axes = axes.flatten()
 
     try:
@@ -41,13 +47,22 @@ def main(path: str) -> None:
                                    marker=".",
                                    s=1)
 
+                if col_idx == 0:
+                    ax.set_ylabel(subject_line, fontsize=7, rotation=0, labelpad=15, ha='right', va='center')
+                    ax.tick_params(axis='y', labelsize=6)
+                else:
+                    ax.set_yticks([])
+
                 if row_idx == len(subjects) - 1:
-                    ax.set_y
+                    ax.set_xlabel(subject_column, fontsize=7)
+                    ax.tick_params(axis='x', labelsize=6)
+                else:
+                    ax.set_xticks([])
 
                 i += 1
 
-        manager = plt.get_current_fig_manager()
-        manager.window.attributes("-zoomed", True)
+        plt.subplots_adjust(wspace=0.1, hspace=0.1, bottom=0.15, left=0.15)
+
         plt.show()
     except Exception as e:
         print(f"{Fore.RED}An error occurred: {e}{Style.RESET_ALL}")
