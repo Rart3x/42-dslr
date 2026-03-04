@@ -20,19 +20,19 @@ def main(path: str) -> None:
     :param path: the path to the CSV file.
     """
 
-    df = pd.read_csv(path)
-    nb_rows_lines = len(subjects)
-    i = 0
-
-    for column in columns_to_delete:
-        df.pop(column)
-
-    fig, axes = plt.subplots(nrows=nb_rows_lines,
-                             ncols=nb_rows_lines,
-                             figsize=(20, 20))
-    axes = axes.flatten()
-
     try:
+        df = pd.read_csv(path)
+        nb_rows_lines = len(subjects)
+        i = 0
+
+        for column in columns_to_delete:
+            df.pop(column)
+
+        fig, axes = plt.subplots(nrows=nb_rows_lines,
+                                 ncols=nb_rows_lines,
+                                 figsize=(20, 20))
+        axes = axes.flatten()
+
         for row_idx, subject_line in enumerate(subjects):
             for col_idx, subject_column in enumerate(subjects):
                 ax = axes[i]
