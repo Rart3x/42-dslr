@@ -1,8 +1,14 @@
 import argparse
+import time
+from os import wait
+from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
 from colorama import Fore, Style
+
+nb_epochs = 10000
+learning_rate = 0.01
 
 features_to_keep = [
     "Arithmancy",
@@ -24,11 +30,8 @@ houses = [
     "Gryffindor"
 ]
 
-nb_epochs = 10000
-learning_rate = 0.01
 
-
-def process_data(df: pd.DataFrame) -> np.ndarray:
+def process_data(df: pd.DataFrame) -> Tuple[np.ndarray, int, int]:
     """
     Takes a raw dataFrame as input and returns
     the cleaned and standardized version
@@ -60,7 +63,7 @@ def process_data(df: pd.DataFrame) -> np.ndarray:
     X = x_standardize.to_numpy()
 
     # Insert ones at the start of each line as the bias
-    return np.insert(X, 0, 1, axis=1)
+    return np.insert(X, 0, 1, axis=1), mu, sigma
 
 
 def sigmoid(z: np.ndarray) -> np.ndarray:
@@ -101,9 +104,19 @@ def main(path: str) -> None:
             y = (df["Hogwarts House"] == house).astype(int).to_numpy()
             weights_for_house[house] = train(X, y)
 
-        print(f"with nb_epochs {nb_epochs}")
-        print(f"and learning rate {learning_rate}")
-        print(f"Final weights are : {weights_for_house[houses[3]]}")
+        np.savez("test", **weights_for_house)
+
+        # time.sleep(1)
+        #
+        # npzfile = np.load("test.npz")
+        #
+        # print(npzfile["Gryffindor"])
+        #
+        # exit(0)
+
+        # print(f"with nb_epochs {nb_epochs}")
+        # print(f"and learning rate {learning_rate}")
+        # print(f"Final weights are : {weights_for_house[houses[3]]}")
     except Exception as e:
         print(f"{Fore.RED}An error occurred: {e}{Style.RESET_ALL}")
 
