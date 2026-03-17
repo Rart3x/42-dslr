@@ -97,22 +97,14 @@ def main(path: str) -> None:
     try:
         df = pd.read_csv(path)
 
-        X = process_data(df)
+        X, mu, sigma = process_data(df)
         weights_for_house: dict[str, np.ndarray] = {}
 
         for house in houses:
             y = (df["Hogwarts House"] == house).astype(int).to_numpy()
             weights_for_house[house] = train(X, y)
 
-        np.savez("test", **weights_for_house)
-
-        # time.sleep(1)
-        #
-        # npzfile = np.load("test.npz")
-        #
-        # print(npzfile["Gryffindor"])
-        #
-        # exit(0)
+        np.savez("test.npz", mu=mu, sigma=sigma, **weights_for_house)
 
         # print(f"with nb_epochs {nb_epochs}")
         # print(f"and learning rate {learning_rate}")
