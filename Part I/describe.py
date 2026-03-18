@@ -31,14 +31,18 @@ def describe(path: str, show_all_rows: bool = False):
 
         # Compute statistics for each numeric column
         stats = {
-            "count":    mth.count(numeric_df),
-            "mean":     mth.mean(numeric_df),
-            "std":      mth.std(numeric_df),
-            "min":      mth.min(numeric_df),
+            "Count":    mth.count(numeric_df),
+            "Mean":     mth.mean(numeric_df),
+            "Std":      mth.std(numeric_df),
+            "Min":      mth.min(numeric_df),
             "25%":      mth.percentile_25(numeric_df),
             "50%":      mth.percentile_50(numeric_df),
             "75%":      mth.percentile_75(numeric_df),
-            "max":      mth.max(numeric_df),
+            "Max":      mth.max(numeric_df),
+            "Missing":  mth.missing(numeric_df),
+            "Var":      mth.var(numeric_df),
+            "Iqr":      mth.iqr(numeric_df),
+            "Skew":      mth.skew(numeric_df)
         }
 
         # Convert the stats dictionary to a DataFrame for better formatting
@@ -46,8 +50,7 @@ def describe(path: str, show_all_rows: bool = False):
         describe_df = pd.DataFrame(stats).T
 
         # Optional: round the numbers for nicer output
-        if not show_all_rows:
-            describe_df = describe_df.round(6)
+        pd.options.display.float_format = '{:.6f}'.format
 
         # Print the summary table
         print(describe_df)

@@ -1,4 +1,5 @@
 import math
+
 import pandas as pd
 
 
@@ -225,3 +226,99 @@ def percentile_75(data: pd.DataFrame):
     :return: A Series containing the 75th percentile per column.
     """
     return _percentile(data, 0.75)
+
+
+def missing(data: pd.DataFrame):
+    """
+    Count all "NaN" values for each column.
+
+    :param data: The input DataFrame.
+    :return: A series containing the count of NaN values per column.
+    """
+    numeric_df = _numeric_columns(data)
+    results = {}
+
+    for col in numeric_df.columns:
+        c = 0
+        for x in numeric_df[col]:
+            if pd.isna(x):
+                c += 1
+        results[col] = c
+
+    return pd.Series(results)
+
+
+def var(data: pd.DataFrame):
+    """
+    Calculates the variance of each column of the dataset.
+
+    :param data: The input DataFrame.
+    :return: A series containing the variance of each column.
+    """
+    numeric_df = _numeric_columns(data)
+    results = {}
+
+    full_count = count(data)
+    full_mean = mean(data)
+
+    for col in numeric_df.columns:
+        # Verifies if we have more than one value to prevent division by 0
+        if full_count[col] <= 1:
+            results[col] = float('nan')
+            continue
+
+        # Calculate the squared deviation
+        sum_deviation = 0
+        for x in numeric_df[col]:
+            if pd.notna(x):
+                sum_deviation += (x - full_mean[col]) ** 2
+
+        results[col] = sum_deviation / (full_count[col] - 1)
+
+    return pd.Series(results)
+
+
+def iqr(data: pd.DataFrame):
+    """
+    Calculates the interquartile range of each column of the dataset.
+
+    :param data: The input DataFrame.
+    :return: A series containing the iqr of each column.
+    """
+    return percentile_75(data) - percentile_25(data)
+
+
+def skew(data: pd.DataFrame):
+    """
+    Calculates the skewness of each column of the dataset.
+
+    :param data: The input DataFrame.
+    :return: A series containing the skewness of each column.
+    """
+    numeric_df = _numeric_columns(data)
+    results = {}
+
+    counts = count(data)
+    means = mean(data)
+    stds = std(data)
+
+    for col in numeric_df.columns:
+        # Verifies if we have more than two values and the std in not null
+        # to prevent division by 0
+        if counts[col] <= 2 or stds[col] == 0:
+            results[col] = float('nan')
+            continue
+
+        # Sum of all the cubes
+        cube_sum = 0
+        for x in numeric_df[col]:
+            if pd.notna(x):
+                cube_sum += ((x - means[col]) / stds[col]) ** 3
+
+        # Calculate the skewness using the formula
+        skewness = ((counts[col] / ((counts[col] - 1) * (counts[col] - 2)))
+                    * cube_sum)
+
+        results[col] = skewness
+
+    return pd.Series(results)
