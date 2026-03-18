@@ -35,6 +35,39 @@ def main(path: str) -> None:
 
         # Show the histogram
         plt.tight_layout()
+
+        def on_click(event):
+            if event.inaxes is None or event.dblclick is False:
+                return
+
+            clicked_ax = event.inaxes
+
+            try:
+                idx = list(axes).index(clicked_ax)
+            except ValueError:
+                return
+
+            if idx >= len(subjects):
+                return
+
+            subject = subjects[idx]
+
+            fig_new, ax_new = plt.subplots(figsize=(6, 6))
+
+            for house in houses:
+                subject_score = df[df["Hogwarts House"] == house][subject]
+                clean_subject_score = subject_score.dropna()
+                ax_new.hist(clean_subject_score, label=house, alpha=0.5)
+
+            ax_new.set_title(subject)
+            ax_new.set_xlabel("Score")
+            ax_new.set_ylabel("Frequency")
+            ax_new.legend()
+
+            plt.show()
+
+        fig.canvas.mpl_connect('button_press_event', on_click)
+
         plt.show()
     except Exception as e:
         print(f"{Fore.RED}An error occurred: {e}{Style.RESET_ALL}")
