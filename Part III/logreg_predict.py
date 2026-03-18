@@ -53,18 +53,25 @@ def main(dataset_test: str, file_weights: str) -> None:
             predictions.append(predicted_house)
 
         # Save results
-        pd.DataFrame({
+        (pd.DataFrame({
             "Hogwarts House": predictions
-        }).reset_index().rename(columns={"index": "Index"}).to_csv("houses.csv", index=False)
+        }).reset_index().rename(columns={"index": "Index"})
+            .to_csv("houses.csv", index=False))
 
-        print(f"{Fore.GREEN}Prediction file saved as houses.csv{Style.RESET_ALL}")
+        print(f"{Fore.GREEN}"
+              f"Prediction file saved as houses.csv"
+              f"{Style.RESET_ALL}")
 
     except Exception as e:
-        print(f"{Fore.RED}An error occurred: {e}{Style.RESET_ALL}")
+        print(f"{Fore.RED}"
+              f"An error occurred: "
+              f"{e}"
+              f"{Style.RESET_ALL}")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Logistic Regression Prediction")
+    parser = (argparse.ArgumentParser
+              (description="Logistic Regression Prediction"))
 
     parser.add_argument('dataset_test',
                         type=str,
