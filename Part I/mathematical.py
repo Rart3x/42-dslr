@@ -298,13 +298,14 @@ def skew(data: pd.DataFrame):
     numeric_df = _numeric_columns(data)
     results = {}
 
-    full_count = count(data)
-    full_mean = mean(data)
-    full_std = std(data)
+    counts = count(data)
+    means = mean(data)
+    stds = std(data)
 
     for col in numeric_df.columns:
-        # Verifies if we have more than two values and the std in not null to prevent division by 0
-        if full_count[col] <= 2 or full_std[col] == 0:
+        # Verifies if we have more than two values and the std in not null
+        # to prevent division by 0
+        if counts[col] <= 2 or stds[col] == 0:
             results[col] = float('nan')
             continue
 
@@ -312,8 +313,12 @@ def skew(data: pd.DataFrame):
         cube_sum = 0
         for x in numeric_df[col]:
             if pd.notna(x):
-                cube_sum += ((x - full_mean[col]) / full_std[col])**3
+                cube_sum += ((x - means[col]) / stds[col]) ** 3
 
-        results[col] = (full_count[col] / ((full_count[col] - 1) * (full_count[col] - 2))) * cube_sum
+        # Calculate the skewness using the formula
+        skewness = ((counts[col] / ((counts[col] - 1) * (counts[col] - 2)))
+                    * cube_sum)
+
+        results[col] = skewness
 
     return pd.Series(results)
