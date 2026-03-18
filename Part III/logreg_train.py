@@ -81,16 +81,28 @@ def sigmoid(z: np.ndarray) -> np.ndarray:
 
 
 def train(X: np.ndarray, y: np.ndarray) -> np.ndarray:
-    theta = np.zeros(X.shape[1])
+    """
+    The function that trains our model through the gradient descent.
+
+    X = our matrix of data
+    W = our vector containing weights for each subject
+    y = the vector containing the answers to the prediction
+    learning rate = defines the step with which we perform the gradient descent
+
+    :param X: matrix of data.
+    :param y: vector containing the answers
+    :return: the weights after the training
+    """
+    W = np.zeros(X.shape[1])
 
     for epoch in range(nb_epochs):
-        z = np.dot(X, theta)
-        predictions = sigmoid(z)
+        Z = np.dot(X, W)
+        predictions = sigmoid(Z)
         error = predictions - y
         gradient = 1 / X.shape[1] * np.dot(np.transpose(X), error)
-        theta = theta - (learning_rate * gradient)
+        W = W - (learning_rate * gradient)
 
-    return theta
+    return W
 
 
 def main(path: str) -> None:
@@ -105,10 +117,6 @@ def main(path: str) -> None:
             weights_for_house[house] = train(X, y)
 
         np.savez("test.npz", mu=mu, sigma=sigma, **weights_for_house)
-
-        # print(f"with nb_epochs {nb_epochs}")
-        # print(f"and learning rate {learning_rate}")
-        # print(f"Final weights are : {weights_for_house[houses[3]]}")
     except Exception as e:
         print(f"{Fore.RED}An error occurred: {e}{Style.RESET_ALL}")
 
