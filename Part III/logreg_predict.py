@@ -12,14 +12,13 @@ def main(dataset_test: str, file_weights: str) -> None:
         # Load dataset
         df = pd.read_csv(dataset_test)
 
-        # Load weights + standardization values
+        # Load weights
         data = np.load(file_weights)
 
         # Extract weights for each house
         weights_for_house = {
             key: data[key]
             for key in data.files
-            if key not in ["mu", "sigma"]
         }
 
         # Get a standardized version of the dataFrame ready for predictions
