@@ -1,5 +1,4 @@
 import argparse
-from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -29,7 +28,7 @@ houses = [
 ]
 
 
-def process_data(df: pd.DataFrame) -> Tuple[np.ndarray, int, int]:
+def process_data(df: pd.DataFrame) -> np.ndarray:
     """
     Takes a raw dataFrame as input and returns
     the cleaned and standardized version
@@ -61,7 +60,7 @@ def process_data(df: pd.DataFrame) -> Tuple[np.ndarray, int, int]:
     X = x_standardize.to_numpy()
 
     # Insert ones at the start of each line as the bias
-    return np.insert(X, 0, 1, axis=1), mu, sigma
+    return np.insert(X, 0, 1, axis=1)
 
 
 def sigmoid(z: np.ndarray) -> np.ndarray:
@@ -107,14 +106,19 @@ def main(path: str) -> None:
     try:
         df = pd.read_csv(path)
 
-        X, mu, sigma = process_data(df)
+        X = process_data(df)
         weights_for_house: dict[str, np.ndarray] = {}
 
         for house in houses:
             y = (df["Hogwarts House"] == house).astype(int).to_numpy()
             weights_for_house[house] = train(X, y)
 
-        np.savez("test.npz", mu=mu, sigma=sigma, **weights_for_house)
+        np.savez("weights.npz", **weights_for_house)
+
+        print(f"{Fore.GREEN}"
+              f"Training file saved as weights.npz"
+              f"{Style.RESET_ALL}")
+
     except Exception as e:
         print(f"{Fore.RED}An error occurred: {e}{Style.RESET_ALL}")
 
