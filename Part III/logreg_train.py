@@ -96,7 +96,7 @@ def train(X: np.ndarray, y: np.ndarray) -> np.ndarray:
         Z = np.dot(X, W)
         predictions = sigmoid(Z)
         error = predictions - y
-        gradient = 1 / X.shape[1] * np.dot(np.transpose(X), error)
+        gradient = 1 / X.shape[0] * np.dot(np.transpose(X), error)
         W = W - (learning_rate * gradient)
 
     return W
