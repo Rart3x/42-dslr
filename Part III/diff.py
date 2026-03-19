@@ -72,7 +72,7 @@ def compare_csv(file1: str, file2: str) -> None:
                 Fore.RED
                 + f"Row {row_idx}, Column '{col}': "
                   f"{file1}= {Fore.YELLOW}'{val1}' {Fore.RED}vs"
-                  f"{file2}= '{Fore.YELLOW}{val2}'"
+                  f"{file2}= {Fore.YELLOW}'{val2}'"
             )
     else:
         print(Fore.GREEN + "The two CSV files are identical!")
