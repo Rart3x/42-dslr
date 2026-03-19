@@ -61,9 +61,9 @@ def main(dataset_test: str, dataset_truth: str, file_weights: str) -> None:
 
             if "Hogwarts House" not in df_truth.columns:
                 print(f"{Fore.YELLOW}"
-                      f"Pas de colonne 'Hogwarts House'"
-                      f"dans le dataset truth →"
-                      f"matrice de confusion ignorée"
+                      f"No column 'Hogwarts House'"
+                      f"in dataset truth →"
+                      f"confusion matrix cannot be computed"
                       f"{Style.RESET_ALL}")
                 return
 
