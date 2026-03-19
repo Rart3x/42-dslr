@@ -118,7 +118,7 @@ def train(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, List[float]]:
     W = np.zeros(X.shape[1])
     loss_history = []
 
-    # Tolerance to know if our model is still learning
+    # Tolerance to determine if our model is still learning
     tolerance = 1e-7
 
     for epoch in range(nb_epochs):
